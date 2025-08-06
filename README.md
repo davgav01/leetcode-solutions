@@ -24,6 +24,3 @@ This repository contains Python solutions and templates for various LeetCode pro
 
 ## Contributing
 Feel free to submit pull requests for new problems, improved solutions, or additional documentation!
-
-## License
-This repository is open source and available under the MIT License. 
