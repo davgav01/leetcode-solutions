@@ -34,6 +34,7 @@ lists[i] is sorted in ascending order.
 The sum of lists[i].length will not exceed 10^4.
 """
 
+import heapq
 from typing import List, Optional
 
 
@@ -45,47 +46,36 @@ class ListNode:
 
 
 class Solution:
-    def mergeTwoLists(self, list1: ListNode, list2: ListNode):
-        if not list1:
-            return list2
-        if not list2:
-            return list1
-
-        if list1.val > list2.val:
-            dummy_node = ListNode(0, list2)
-            list2 = list2.next if list2.next else None
-        else:
-            dummy_node = ListNode(0, list1)
-            list1 = list1.next if list1.next else None
-        dummy_next = dummy_node.next
-
-        while list1 and list2:
-            if list1.val > list2.val:
-                dummy_next.next = list2
-                dummy_next = dummy_next.next
-                list2 = list2.next if list2.next else None
-            else:
-                dummy_next.next = list1
-                dummy_next = dummy_next.next
-                list1 = list1.next if list1.next else None
-
-        if list2:
-            dummy_next.next = list2
-        elif list1:
-            dummy_next.next = list1
-
-        return dummy_node.next
-
     def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+
         k = len(lists)
         if k == 0:
             return None
         elif k == 1:
             return lists[0]
 
-        current_merged = self.mergeTwoLists(lists[0], lists[1])
-        if k > 2:
-            for i in range(2, k):
-                current_merged = self.mergeTwoLists(current_merged, lists[i])
+        dummy_node = ListNode()
+        dummy_node_copy = dummy_node
+        counter = 0
+        heap = []
+        for l in lists:
+            if l:
+                heap.append((l.val, counter, l))
+            counter += 1
+        heapq.heapify(heap)
 
-        return current_merged
+        while heap:
+            _, _, current_smallest_node = heapq.heappop(heap)
+            dummy_node.next = current_smallest_node
+            dummy_node = dummy_node.next
+
+            current_smallest_node = (
+                current_smallest_node.next if current_smallest_node.next else None
+            )
+            if current_smallest_node:
+                heapq.heappush(
+                    heap, (current_smallest_node.val, counter, current_smallest_node)
+                )
+                counter += 1
+
+        return dummy_node_copy.next
