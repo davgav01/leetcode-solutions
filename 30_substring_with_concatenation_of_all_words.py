@@ -64,7 +64,7 @@ class Solution:
                     left = right + wlen
                     word_hash.clear()
                     count = 0
-                    continue
+                    # continue
 
                 while word_hash[word] > target[word]:
                     word_removed = s[left : left + wlen]
