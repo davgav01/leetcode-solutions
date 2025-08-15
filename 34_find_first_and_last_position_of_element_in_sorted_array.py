@@ -85,6 +85,35 @@ class Solution:
         return [left_index, right_index]
 
 
+from typing import List
+
+
+class Solution2:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        def find_bound(is_left: bool) -> int:
+            left, right = 0, len(nums) - 1
+            bound = -1
+            while left <= right:
+                mid = (left + right) // 2
+                if nums[mid] == target:
+                    bound = mid
+                    if is_left:
+                        right = mid - 1  # keep searching left
+                    else:
+                        left = mid + 1  # keep searching right
+                elif nums[mid] < target:
+                    left = mid + 1
+                else:
+                    right = mid - 1
+            return bound
+
+        left_index = find_bound(True)
+        if left_index == -1:
+            return [-1, -1]
+        right_index = find_bound(False)
+        return [left_index, right_index]
+
+
 # print(Solution().searchRange([1, 2, 3, 4, 5, 5, 6, 7, 8], 5))
 # print(Solution().searchRange([5, 7, 7, 8, 8, 10], 8))
-print(Solution().searchRange([1], 1))
+print(Solution2().searchRange([1], 1))
