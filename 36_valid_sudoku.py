@@ -78,6 +78,29 @@ class Solution:
         return True
 
 
+class Solution:
+    def isValidSudoku(self, board: List[List[str]]) -> bool:
+        def isValidList(l):
+            nums = [x for x in l if x != "."]
+            return len(nums) == len(set(nums))
+
+        # Check rows and columns
+        for i in range(9):
+            if not isValidList(board[i]) or not isValidList(
+                [board[r][i] for r in range(9)]
+            ):
+                return False
+
+        # Check 3x3 sub-boxes
+        for i in range(0, 9, 3):
+            for j in range(0, 9, 3):
+                square = [board[x][y] for x in range(i, i + 3) for y in range(j, j + 3)]
+                if not isValidList(square):
+                    return False
+
+        return True
+
+
 board1 = [
     ["5", "3", ".", ".", "7", ".", ".", ".", "."],
     ["6", ".", ".", "1", "9", "5", ".", ".", "."],
