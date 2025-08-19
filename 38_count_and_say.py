@@ -33,20 +33,20 @@ Constraints:
 
 
 class Solution:
-    def rle(self, string):
-        if len(string) == 0:
-            return ""
-        i = 1
-        while i < len(string) and string[i] == string[i - 1]:
-            i += 1
-        return str(i) + string[0] + self.rle(string[i:])
-
     def countAndSay(self, n: int) -> str:
         output = "1"
 
-        for i in range(1, n):
-            output = self.rle(output)
-            print(output)
+        for _ in range(1, n):
+            new_output = ""
+            left = 0
+            right = 1
+            while left < len(output):
+                while right < len(output) and output[right] == output[right - 1]:
+                    right += 1
+                new_output += str(right - left) + output[left]
+                left = right
+                right += 1
+            output = new_output
 
         print("final: ", n, " = ", output)
         return output
