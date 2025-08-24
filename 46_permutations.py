@@ -22,26 +22,16 @@ All the integers of nums are unique.
 
 class Solution:
     def permute(self, nums: list[int]):
-        ln = len(nums)
+        perms = []
+        for i in nums:
+            if len(nums) == 1:
+                return [[i]]
 
-        def get_perms(checked):
-            perms = []
+            inner_perms = self.permute([j for j in nums if j != i])
+            for j in range(len(inner_perms)):
+                perms.append(inner_perms[j] + [i])
 
-            for i in range(ln):
-                if i in checked:
-                    continue
-
-                if len(checked) == ln - 1:
-                    return [[nums[i]]]
-
-                inner_perms = get_perms(checked.union({i}))
-
-                for j in range(len(inner_perms)):
-                    perms.append(inner_perms[j] + [nums[i]])
-
-            return perms
-
-        print(get_perms(set()))
+        return perms
 
 
-Solution().permute([1, 2, 3])
+print(Solution().permute([1, 2, 3]))
