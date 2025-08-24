@@ -30,29 +30,33 @@ matrix[i].length == n
 class Solution:
     def rotate(self, matrix: list[list[int]]) -> None:
         """
-        Do not return anything, modify matrix in-place instead.
+        Rotate the n x n matrix 90 degrees clockwise in place.
         """
-        ln = len(matrix)
-        for i in range(ln // 2):
-            row = i
-            col = ln - 1 - i
-            start = row
-            end = col
-            while start < col:
-                (
-                    matrix[row][start],
-                    matrix[start][col],
-                    matrix[col][end],
-                    matrix[end][row],
-                ) = (
-                    matrix[end][row],
-                    matrix[row][start],
-                    matrix[start][col],
-                    matrix[col][end],
-                )
+        n = len(matrix)
 
-                start += 1
-                end -= 1
+        # Process the matrix layer by layer, from outermost to innermost
+        for layer in range(n // 2):
+            first = layer  # top row index of this layer
+            last = n - 1 - layer  # bottom row index of this layer
+
+            # Rotate the elements in this layer
+            for i in range(first, last):
+                offset = i - first
+
+                # Save the top element
+                top = matrix[first][i]
+
+                # Move left -> top
+                matrix[first][i] = matrix[last - offset][first]
+
+                # Move bottom -> left
+                matrix[last - offset][first] = matrix[last][last - offset]
+
+                # Move right -> bottom
+                matrix[last][last - offset] = matrix[i][last]
+
+                # Move top -> right
+                matrix[i][last] = top
 
         print(matrix)
 
