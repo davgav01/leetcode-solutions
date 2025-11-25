@@ -18,8 +18,29 @@ n == nums.length
 1 <= n <= 300
 nums[i] is either 0, 1, or 2.
 """
+
 from typing import List
+
 
 class Solution:
     def sortColors(self, nums: List[int]) -> None:
-        pass
+        number_colours = len(nums)
+        index_zero = 0
+        index_two = number_colours - 1
+        current_index = 0
+
+        while current_index <= index_two:
+            if nums[current_index] == 0:
+                nums[index_zero], nums[current_index] = 0, nums[index_zero]
+                index_zero += 1
+                current_index += 1
+            elif nums[current_index] == 2:
+                nums[index_two], nums[current_index] = 2, nums[index_two]
+                index_two -= 1
+            else:
+                current_index += 1
+
+        print(nums)
+
+
+Solution().sortColors([2, 0, 1])
