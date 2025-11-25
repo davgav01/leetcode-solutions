@@ -17,8 +17,59 @@ Constraints:
 1 <= n <= 20
 1 <= k <= n
 """
+
 from typing import List
+
 
 class Solution:
     def combine(self, n: int, k: int) -> List[List[int]]:
-        pass
+        outputs = [[1]]
+        result = []
+
+        for i in range(2, n + 1):
+            # for each number, it starts, it extends from previous, or is skipped
+            # it can only start if less than k from the end
+            starts = [i]
+            skipped = [combination.copy() for combination in outputs]
+
+            extends = []
+            for combination in outputs:
+                combination.append(i)
+                if len(combination) == k:
+                    result.append(combination)
+                else:
+                    extends.append(combination)
+
+            outputs = [starts]
+            for partial_combination in extends:
+                outputs.append(partial_combination)
+            for partial_combination in skipped:
+                outputs.append(partial_combination)
+
+        return result
+
+
+class Solution2:
+    def combine(self, n: int, k: int) -> List[List[int]]:
+        result: List[List[int]] = []
+        path: List[int] = []
+
+        def backtrack(start: int) -> None:
+            # If we've chosen k numbers, record the combination
+            if len(path) == k:
+                result.append(path.copy())
+                return
+
+            # Prune: we need (k - len(path)) more numbers,
+            # so i can go at most to n - (k - len(path)) + 1
+            max_start = n - (k - len(path)) + 1
+            for i in range(start, max_start + 1):
+                path.append(i)
+                backtrack(i + 1)
+                path.pop()
+
+        backtrack(1)
+        return result
+
+
+print(Solution().combine(4, 2))
