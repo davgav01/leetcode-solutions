@@ -24,8 +24,29 @@ Constraints:
 -104 <= nums[i] <= 104
 nums is sorted in non-decreasing order.
 """
+
 from typing import List
+
 
 class Solution:
     def removeDuplicates(self, nums: List[int]) -> int:
-        pass
+        count = 0
+        prev_number = None
+        count_current = 0
+
+        for current in nums:
+
+            if current == prev_number:
+                count_current += 1
+            else:
+                prev_number = current
+                count_current = 0
+
+            if count_current < 2:
+                nums[count] = current
+                count += 1
+
+        return count
+
+
+print(Solution().removeDuplicates([1, 1, 2, 2, 2, 2, 3, 3, 4, 5, 5, 5, 6]))

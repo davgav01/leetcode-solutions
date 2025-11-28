@@ -41,8 +41,30 @@ s1.length == s2.length
 1 <= s1.length <= 30
 s1 and s2 consist of lowercase English letters.
 """
+
 from functools import lru_cache
 
+
 class Solution:
+
+    @lru_cache(None)
     def isScramble(self, s1: str, s2: str) -> bool:
-        pass
+        if s1 == s2:
+            return True
+        if sorted(s1) != sorted(s2):
+            return False
+
+        # Can't use the last index as it would give the full strings again, and get
+        # recursion limit errors
+        for i in range(len(s1) - 1):
+            if self.isScramble(s1[: i + 1], s2[: i + 1]) and self.isScramble(
+                s1[i + 1 :], s2[i + 1 :]
+            ):
+                return True
+
+            if self.isScramble(s1[: i + 1], s2[-i - 1 :]) and self.isScramble(
+                s1[i + 1 :], s2[: -i - 1]
+            ):
+                return True
+
+        return False

@@ -16,8 +16,22 @@ Constraints:
 -10 <= nums[i] <= 10
 All the numbers of nums are unique.
 """
+
 from typing import List
+
 
 class Solution:
     def subsets(self, nums: List[int]) -> List[List[int]]:
-        pass
+        outputs = [[]]
+        for i in nums:
+            new_outputs = []
+            for subset in outputs:
+                new_subset = subset.copy()
+                new_subset.append(i)
+                new_outputs.append(new_subset)
+            outputs.extend(new_outputs)
+
+        return outputs
+
+
+print(Solution().subsets([1, 2, 3]))

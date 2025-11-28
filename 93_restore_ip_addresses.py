@@ -20,8 +20,39 @@ Constraints:
 1 <= s.length <= 20
 s consists of digits only.
 """
+
 from typing import List
+
 
 class Solution:
     def restoreIpAddresses(self, s: str) -> List[str]:
-        pass
+        valid_ips = []
+        digits = len(s)
+
+        def dfs(index, dots, path):
+
+            if dots > 3 or index >= digits:
+                return
+
+            next_3 = s[index : index + 3]
+            if (
+                dots == 3
+                and int(next_3) < 256
+                and (next_3[0] != "0" or next_3 == "0")
+                and index + 3 >= digits
+            ):
+                valid_ips.append(path + next_3)
+
+            for i in range(1, len(next_3) + 1):
+                possible_number = s[index : index + i]
+                if (possible_number[0] != "0" or possible_number == "0") and int(
+                    possible_number
+                ) < 256:
+                    dfs(index + i, dots + 1, path + s[index : index + i] + ".")
+
+        dfs(0, 0, "")
+
+        return valid_ips
+
+
+print(Solution().restoreIpAddresses("25525511135"))

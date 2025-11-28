@@ -31,8 +31,31 @@ nums2.length == n
 1 <= m + n <= 200
 -109 <= nums1[i], nums2[j] <= 109
 """
+
 from typing import List
+
 
 class Solution:
     def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
-        pass
+        index_1, index_2, index_3 = m - 1, n - 1, n + m - 1
+
+        while index_3 >= 0:
+            if index_1 >= 0 and index_2 >= 0:
+                if nums1[index_1] > nums2[index_2]:
+                    nums1[index_3] = nums1[index_1]
+                    index_1 -= 1
+                else:
+                    nums1[index_3] = nums2[index_2]
+                    index_2 -= 1
+            elif index_1 >= 0:
+                nums1[index_3] = nums1[index_1]
+                index_1 -= 1
+            else:
+                nums1[index_3] = nums2[index_2]
+                index_2 -= 1
+            index_3 -= 1
+
+        print(nums1)
+
+
+Solution().merge(nums1=[1, 2, 3, 0, 0, 0], m=3, nums2=[2, 5, 6], n=3)

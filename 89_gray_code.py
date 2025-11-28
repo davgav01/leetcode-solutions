@@ -30,8 +30,26 @@ Output: [0,1]
 Constraints:
 1 <= n <= 16
 """
+
 from typing import List
+
 
 class Solution:
     def grayCode(self, n: int) -> List[int]:
-        pass
+
+        if n == 1:
+            return [0, 1]
+        else:
+            output = []
+            grayCode_n_minus = self.grayCode(n - 1)
+            for i in grayCode_n_minus:
+                output.append(i << 1)
+            for i in reversed(grayCode_n_minus):
+                output.append(1 + (i << 1))
+
+            return output
+
+
+print(Solution().grayCode(1))
+print(Solution().grayCode(2))
+print([bin(i) for i in Solution().grayCode(3)])

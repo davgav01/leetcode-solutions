@@ -34,6 +34,32 @@ Constraints:
 1 <= s.length <= 100
 s contains only digits and may contain leading zero(s).
 """
+
+from functools import lru_cache
+
+
 class Solution:
     def numDecodings(self, s: str) -> int:
-        pass
+        ln = len(s)
+        valid_twos = {"0", "1", "2", "3", "4", "5", "6"}
+
+        @lru_cache(None)
+        def dfs(index):
+            count = 0
+
+            if index >= ln:
+                return 1
+
+            current_number = s[index]
+            if current_number == "0":
+                return 0
+
+            if index < ln - 1:
+                if current_number == "1":
+                    count += dfs(index + 2)
+                elif current_number == "2" and s[index + 1] in valid_twos:
+                    count += dfs(index + 2)
+            count += dfs(index + 1)
+            return count
+
+        return dfs(0)

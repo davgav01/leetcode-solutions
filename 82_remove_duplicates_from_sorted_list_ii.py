@@ -14,7 +14,9 @@ The number of nodes in the list is in the range [0, 300].
 -100 <= Node.val <= 100
 The list is guaranteed to be sorted in ascending order.
 """
+
 from typing import Optional
+
 
 # Definition for singly-linked list.
 class ListNode:
@@ -22,6 +24,21 @@ class ListNode:
         self.val = val
         self.next = next
 
+
 class Solution:
     def deleteDuplicates(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        pass
+
+        dummy_node = ListNode()
+        dummy = dummy_node
+        while head is not None and head.next is not None:
+            if head.val == head.next.val:
+                duplicate_val = head.val
+                while head is not None and head.val == duplicate_val:
+                    head = head.next
+            else:
+                dummy.next = head
+                dummy = dummy.next
+                head = head.next
+
+        dummy.next = head
+        return dummy_node.next
